@@ -61,7 +61,7 @@ public class Rank<T> implements Selection<T> {
         if (rankQueue != null) {
             return;
         }
-        rankQueue = new PriorityQueue<>(1, (c1, c2) -> Double.compare(c1.getFitness(), c2.getFitness()));
+        rankQueue = new PriorityQueue<>(1, (c1, c2) -> Double.compare(c2.getFitness(), c1.getFitness()));
         rankQueue.addAll(population.getIndividuals());
     }
 

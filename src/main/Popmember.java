@@ -15,6 +15,12 @@ public abstract class Popmember<T> implements Comparable<Popmember<T>> {
         return genes;
     }
 
+    public void setGenes(T[] genes) {
+        this.genes = genes;
+        this.fitness = null;
+        getFitness();
+    }
+
     public Double getFitness() {
         if (fitness == null) {
             fitness = calculateFitness();
@@ -22,6 +28,7 @@ public abstract class Popmember<T> implements Comparable<Popmember<T>> {
         return fitness;
     }
 
+    // Requires you to implement FitnessFunc
     public abstract Double calculateFitness();
 
     public abstract Popmember<T> crossOver(Popmember<T> other);
@@ -51,5 +58,6 @@ public abstract class Popmember<T> implements Comparable<Popmember<T>> {
     public int compareTo(Popmember<T> other) {
         return Double.compare(this.getFitness(), other.getFitness());
     }
+
 
 }

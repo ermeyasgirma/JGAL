@@ -25,7 +25,6 @@ public class Population<T> {
         return totalFitness;
     }
 
-
     public Popmember<T> getFittest() {
         return members.stream()
             .max((c1, c2) -> Double.compare(c1.getFitness(), c2.getFitness()))

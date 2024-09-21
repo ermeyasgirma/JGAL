@@ -1,9 +1,9 @@
 package main;
 import java.util.Random;
 
-public class Crossover<T> {
+public class Crossover {
 
-    public Popmember<T> crossGenes(Popmember<T> parent1, Popmember<T> parent2) {
+    public static <T> Popmember<T> crossGenes(Popmember<T> parent1, Popmember<T> parent2) {
         Random random = new Random();
         int crossoverPoint = random.nextInt(parent1.getGenes().length);
 

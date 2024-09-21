@@ -1,4 +1,7 @@
 package main;
+
+import java.util.*;
+
 public class JGAL {
 
     /*
@@ -12,13 +15,49 @@ public class JGAL {
      * 
      */
 
+    /*
+     * TODO:
+     *  Add comments to each file
+     *  Commit changes, then try to remove duplicate code across selectMethods
+     *  Parse user input for selection method
+     *  Implement beginning of genetic algorithm
+     */
+
     private long generations;
 
     private int mutattionRate;
 
     public static void main(String[] args) {
+
+        String selection = args[0].toLowerCase();
+        switch (selection) {
+            case "elitism":
+                
+                break;
+            
+            case "rank":
+                
+                break;
+
+            case "roulette wheel":
+
+                break;
+
+            case "boltzmann":
+
+                break;
+
+            case "tournament":
+
+                break;
+
+            case "steadystate":
+
+                break;
         
-        
+            default:
+                break;
+        }
     }
     
 }
