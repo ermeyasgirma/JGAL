@@ -6,14 +6,16 @@ import main.Popmember;
 
 public class Boltzmann<T> implements Selection<T> {
 
+    private Map<Popmember<T>, Double> memberToProbability;
+
+    public Boltzmann() {}
+
     public Population<T> select(Population<T> population) {
         List<Popmember<T>> luckyPopmembers = new ArrayList<>();
-        double proportion = 0.5;
         int popSize = population.getIndividuals().size();
-        for (int i = 0; i < popSize*proportion; i++) {
+        for (int i = 0; i < popSize*0.9; i++) {
             Popmember<T> selected = runBoltzmann(population);
             luckyPopmembers.add(selected);
-            population.removeMember(selected);
         }
         Population<T> selectedPopulation = new Population<>(luckyPopmembers);
         return selectedPopulation;
@@ -27,11 +29,13 @@ public class Boltzmann<T> implements Selection<T> {
 
         double probabilityDenominator = getDenominator(population, initialTemp);
 
-        Map<Popmember<T>, Double> memberToProbability = new HashMap<>();
-        for (Popmember<T> pm : population.getIndividuals()) {
-            double numerator = Math.exp(pm.getFitness()/initialTemp);
-            double probability = numerator / probabilityDenominator;
-            memberToProbability.put(pm, probability);
+        if (memberToProbability == null) {
+            Map<Popmember<T>, Double> memberToProbability = new HashMap<>();
+            for (Popmember<T> pm : population.getIndividuals()) {
+                double numerator = Math.exp(pm.getFitness()/initialTemp);
+                double probability = numerator / probabilityDenominator;
+                memberToProbability.put(pm, probability);
+            }
         }
 
         Random random = new Random();

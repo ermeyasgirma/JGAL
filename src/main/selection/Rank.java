@@ -11,15 +11,15 @@ public class Rank<T> implements Selection<T> {
 
     private PriorityQueue<Popmember<T>> rankQueue;
 
+    public Rank() {}
+
     public Population<T> select(Population<T> population) {
         List<Popmember<T>> luckyPopmembers = new ArrayList<>();
-        double proportion = 0.5;
         int popSize = population.getIndividuals().size();
-        for (int i = 0; i < popSize*proportion; i++) {
+        rankQueue(population);
+        for (int i = 0; i < popSize*0.9; i++) {
             Popmember<T> selected = runRankRoulette(population);
             luckyPopmembers.add(selected);
-            population.removeMember(selected);
-            rankQueue.remove(selected);
         }
         Population<T> selectedPopulation = new Population<>(luckyPopmembers);
         return selectedPopulation;
@@ -32,7 +32,8 @@ public class Rank<T> implements Selection<T> {
         /* TODO: Confirm that rank n is higher than rank 1 */
         Map<Popmember<T>, Integer> memberToRank = new HashMap<>();
         int rankCounter = popSize;
-        for (Popmember<T> pm : population.getIndividuals()) {
+        while (rankCounter > 0) {
+            Popmember<T> pm = rankQueue.poll();
             memberToRank.put(pm, rankCounter);
             rankCounter -= 1;
         }

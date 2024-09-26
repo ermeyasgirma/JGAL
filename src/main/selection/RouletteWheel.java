@@ -4,17 +4,19 @@ import java.util.*;
 import main.Popmember;
 import main.Population;
 
+/* TODO: Individuals do not need to be removed if they are selected */
+
 public class RouletteWheel<T> implements Selection<T> {
+
+    public RouletteWheel() {}
 
     public Population<T> select(Population<T> population) {
         List<Popmember<T>> luckyPopmembers = new ArrayList<>();
         /* TODO: Figure out what proportion of the population we select */
-        double proportion = 0.5;
         int popSize = population.getIndividuals().size();
-        for (int i = 0; i < popSize*proportion; i++) {
+        for (int i = 0; i < popSize*0.9; i++) {
             Popmember<T> selected = runRoulette(population);
             luckyPopmembers.add(selected);
-            population.removeMember(selected);
         }
         Population<T> selectePopulation = new Population<>(luckyPopmembers);
         return selectePopulation;

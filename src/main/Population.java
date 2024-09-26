@@ -2,6 +2,7 @@ package main;
 import java.util.List;
 
 public class Population<T> {
+    
     private List<Popmember<T>> members;
     private Double totalFitness;
 

@@ -5,6 +5,11 @@ public abstract class Popmember<T> implements Comparable<Popmember<T>> {
 
     private T[] genes;
     private Double fitness;
+    private Class<T> className;
+
+    public Popmember(Class<T> className) {
+        this.className = className;
+    }
 
     public Popmember(T[] genes) {
         this.genes = genes;
@@ -34,6 +39,8 @@ public abstract class Popmember<T> implements Comparable<Popmember<T>> {
     public abstract Popmember<T> crossOver(Popmember<T> other);
 
     public abstract Popmember<T> createInstance(T[] newGenes);
+
+    public abstract Population<T> createInitialPopulation(long size);
 
     @Override
     public boolean equals(Object other) {

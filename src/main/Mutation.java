@@ -1,7 +1,8 @@
 package main;
-import java.util.*;
 
 public abstract class Mutation<T> {
+
+    private double mutationRate = 0.025;
 
     public static <T> T[] mutateGenes(T[] genes) {
         return mutateGenes(genes);

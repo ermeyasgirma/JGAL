@@ -1,5 +1,5 @@
 package main;
-import java.util.Random;
+import java.util.*;
 
 public class Crossover {
 
@@ -14,5 +14,17 @@ public class Crossover {
         }
 
         return parent1.createInstance(offspringGenes); 
+    }
+
+    public static <T> Population<T> crossPopulation(Population<T> population) {
+        Population<T> offspringPop = null;
+        List<Popmember<T>> offspringLists = new ArrayList<>();
+
+        for (int i = 0; i < population.getIndividuals().size(); i++) {
+            // cross p(i) and p(i+1)
+            // iclude mutation
+        }
+
+        return offspringPop;
     }
 }

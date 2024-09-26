@@ -1,5 +1,5 @@
 package main;
-public interface FitnessFunc {
+public interface FitnessFunc<T> {
 
-    double fitnessScore();
+    double fitnessScore(Popmember<T> pm);
 }
