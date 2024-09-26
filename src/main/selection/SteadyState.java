@@ -8,6 +8,7 @@ import java.util.PriorityQueue;
 
 import main.Popmember;
 import main.Crossover;
+import main.ExampleMutation;
 import main.Mutation;
 
 public class SteadyState<T> implements Selection<T> {
@@ -31,8 +32,6 @@ public class SteadyState<T> implements Selection<T> {
 
         for (int i = 0; i < cohortSize - 2; i+=2) {
             Popmember<T> child = Crossover.crossGenes(elite.get(i), elite.get(i+1));
-            T[] mutatedGenes = Mutation.mutateGenes(child.getGenes());
-            child.setGenes(mutatedGenes);
             population.getIndividuals().add(child);
         }
 

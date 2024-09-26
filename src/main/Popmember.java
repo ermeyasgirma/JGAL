@@ -6,14 +6,17 @@ public abstract class Popmember<T> implements Comparable<Popmember<T>> {
     private T[] genes;
     private Double fitness;
     private Class<T> className;
+    private FitnessFunc<T> ff;
 
-    public Popmember(Class<T> className) {
+
+    public Popmember(Class<T> className, FitnessFunc<T> ff) {
         this.className = className;
+        this.ff = ff;
     }
 
-    public Popmember(T[] genes) {
-        this.genes = genes;
-        getFitness();
+    public Popmember(T[] genes, FitnessFunc<T> ff) {
+        this.ff = ff;
+        setGenes(genes);
     }
 
     public T[] getGenes() {
@@ -28,15 +31,15 @@ public abstract class Popmember<T> implements Comparable<Popmember<T>> {
 
     public Double getFitness() {
         if (fitness == null) {
-            fitness = calculateFitness();
+            fitness = calculateFitness(ff);
         }
         return fitness;
     }
 
     // Requires you to implement FitnessFunc
-    public abstract Double calculateFitness();
-
-    public abstract Popmember<T> crossOver(Popmember<T> other);
+    public  Double calculateFitness(FitnessFunc<T> fitnessFunc) {
+        return fitnessFunc.fitnessScore(genes);
+    }
 
     public abstract Popmember<T> createInstance(T[] newGenes);
 
@@ -64,6 +67,11 @@ public abstract class Popmember<T> implements Comparable<Popmember<T>> {
     @Override
     public int compareTo(Popmember<T> other) {
         return Double.compare(this.getFitness(), other.getFitness());
+    }
+
+    @Override
+    public String toString() {
+        return "Fittest solution:{" + "genes=" + Arrays.toString(genes) + ", fitness=" + fitness + '}';
     }
 
 

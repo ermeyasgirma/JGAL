@@ -4,21 +4,12 @@ import java.util.*;
 
 import main.selection.Boltzmann;
 import main.selection.Elitism;
+import main.selection.ExampleFitnessFunc;
 import main.selection.Rank;
+import main.selection.RouletteWheel;
 import main.selection.Selection;
 
 public class JGAL {
-
-    /*
-     * 
-     * Steps:
-     * 1. create initial generation of possible solutions
-     * 2. perform tournament selection, crossover between winners and carry over top k candidates to next generation with no crossover
-     * 3. now we have our new generation
-     * 4. apply step 2 again with our new generation
-     * 5. do this 10,000 times 
-     * 
-     */
 
     /*
      * TO-DO:
@@ -34,27 +25,31 @@ public class JGAL {
 
         long generations = 1000;
 
-        String input = args[0].toLowerCase();
-        Selection selectionType = getSelection(input);
+        Selection selectionType = getSelection(args[0]);
         Selection elitism = new Elitism<>();
 
         /* TODO:  */
         Class c = Object.class;
-        
-        ExamplePopmember<Integer> epm = new ExamplePopmember<>(c);
+        FitnessFunc ff = new ExampleFitnessFunc();
+        ExamplePopmember<Integer> epm = new ExamplePopmember(c, ff);
+
         Population firstGeneration =  epm.createInitialPopulation(250);
         Population currentGeneration = firstGeneration;
-        for (int i = 0; i < generations/2; i++) {
+        for (int i = 0; i < generations; i++) {
             Population eliteCohort = elitism.select(currentGeneration);
             Population selectedMembers = selectionType.select(currentGeneration);
 
-            Population offspringPopulation = Crossover.crossPopulation(selectedMembers);
+            /* TODO:  */
+            Mutation mutation = new ExampleMutation();
+            Population offspringPopulation = Crossover.crossPopulation(selectedMembers, mutation);
             Population newGen = combinePopulations(eliteCohort, offspringPopulation);
 
             currentGeneration = newGen;
         }
 
-        currentGeneration.getFittest();
+        Popmember solution = currentGeneration.getFittest();
+
+        System.out.println(solution);
 
     }
 
@@ -68,36 +63,23 @@ public class JGAL {
     }
 
     public static <T> Selection<T> getSelection(String input) {
-        Selection<T> selection = null;
-        switch (input) {
-            case "elitism":
-                
-                break;
-            
+        switch (input.toLowerCase()) {
             case "rank":
                 
-                break;
+                return new Rank<>();
 
             case "roulette wheel":
 
-                break;
+                return new RouletteWheel<>();
 
             case "boltzmann":
 
-                break;
+                return new Boltzmann<>();
 
-            case "tournament":
-
-                break;
-
-            case "steadystate":
-
-                break;
-        
             default:
-                break;
+
+                throw new IllegalArgumentException("Invalid selection method: " + input);
         }
-        return selection;
     }
     
 }

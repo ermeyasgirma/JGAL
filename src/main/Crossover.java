@@ -16,15 +16,21 @@ public class Crossover {
         return parent1.createInstance(offspringGenes); 
     }
 
-    public static <T> Population<T> crossPopulation(Population<T> population) {
+    public static <T> Population<T> crossPopulation(Population<T> population, Mutation<T> mutation) {
         Population<T> offspringPop = null;
-        List<Popmember<T>> offspringLists = new ArrayList<>();
+        List<Popmember<T>> childrenList = new ArrayList<>();
 
-        for (int i = 0; i < population.getIndividuals().size(); i++) {
-            // cross p(i) and p(i+1)
-            // iclude mutation
+        for (int i = 0; i < population.getIndividuals().size(); i+=2) {
+            Popmember<T> parent1 = population.getIndividuals().get(i);
+            Popmember<T> parent2 = population.getIndividuals().get(i+1);
+
+            Popmember<T> child = crossGenes(parent1, parent2);
+            T[] mutatedGenes = mutation.mutate(child.getGenes());
+
+            child.setGenes(mutatedGenes);
+            childrenList.add(child);
         }
-
+        offspringPop = new Population<>(childrenList);
         return offspringPop;
     }
 }

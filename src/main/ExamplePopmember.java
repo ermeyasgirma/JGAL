@@ -3,23 +3,12 @@ package main;
 
 public class ExamplePopmember<T> extends Popmember<T> {
 
-    public ExamplePopmember(Class<T> className) {
-        super(className);
+    public ExamplePopmember(Class<T> className, FitnessFunc<T> ff) {
+        super(className, ff);
     }
 
-    public ExamplePopmember(T[] genes) {
-        super(genes);
-    }
-
-    public Double calculateFitness() {
-        // TODO: Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'calculateFitness");
-    }
-
-    @Override
-    public Popmember<T> crossOver(Popmember other) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'crossOver'");
+    public ExamplePopmember(T[] genes, FitnessFunc<T> ff) {
+        super(genes, ff);
     }
 
     @Override
