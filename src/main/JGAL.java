@@ -15,7 +15,7 @@ public class JGAL {
 
         long generations = 1000;
 
-        Selection selectionType = getSelection(args[0]);
+        Selection selectionType = getSelection(args);
         Selection elitism = new Elitism<>();
 
         /* TODO:  Replace Object with the type parameter you want for your Population member
@@ -54,7 +54,16 @@ public class JGAL {
         return combined;
     }
 
-    public static <T> Selection<T> getSelection(String input) {
+    public static <T> Selection<T> getSelection(String[] args) {
+        if (args.length == 0) {
+            return new Rank<>();
+        }
+        if (args.length > 1) {
+            throw new IllegalArgumentException("Invalid number of arguments: " + args.length);
+        }
+
+        String input = args[0];
+        
         switch (input.toLowerCase()) {
             case "rank":
                 
