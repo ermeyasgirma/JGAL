@@ -4,21 +4,11 @@ import java.util.*;
 
 import main.selection.Boltzmann;
 import main.selection.Elitism;
-import main.selection.ExampleFitnessFunc;
 import main.selection.Rank;
 import main.selection.RouletteWheel;
 import main.selection.Selection;
 
 public class JGAL {
-
-    /*
-     * TO-DO:
-     *  Add comments to each file
-     *  Commit changes, then try to remove duplicate code across selectMethods
-     *  Parse user input for selection method
-     *  Implement beginning of genetic algorithm
-     *  Insert TO-DO comments everywhere the user is expected to add their own implementation
-     */
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public static void main(String[] args) {
@@ -28,7 +18,11 @@ public class JGAL {
         Selection selectionType = getSelection(args[0]);
         Selection elitism = new Elitism<>();
 
-        /* TODO:  */
+        /* TODO:  Replace Object with the type parameter you want for your Population member
+         * 
+         *  Example:
+         *  Class c = Integer.class;
+        */
         Class c = Object.class;
         FitnessFunc ff = new ExampleFitnessFunc();
         ExamplePopmember<Integer> epm = new ExamplePopmember(c, ff);
@@ -39,7 +33,6 @@ public class JGAL {
             Population eliteCohort = elitism.select(currentGeneration);
             Population selectedMembers = selectionType.select(currentGeneration);
 
-            /* TODO:  */
             Mutation mutation = new ExampleMutation();
             Population offspringPopulation = Crossover.crossPopulation(selectedMembers, mutation);
             Population newGen = combinePopulations(eliteCohort, offspringPopulation);
@@ -53,12 +46,11 @@ public class JGAL {
 
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static Population combinePopulations(Population p1, Population p2) {
-        Population combined = null;
-        List<Popmember> combinedList = p1.getIndividuals();
+    public static <T> Population<T> combinePopulations(Population<T> p1, Population<T> p2) {
+        Population<T> combined = null;
+        List<Popmember<T>> combinedList = p1.getIndividuals();
         combinedList.addAll(p2.getIndividuals());
-        combined = new Population(combinedList);
+        combined = new Population<T>(combinedList);
         return combined;
     }
 

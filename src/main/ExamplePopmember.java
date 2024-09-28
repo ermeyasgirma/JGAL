@@ -11,15 +11,9 @@ public class ExamplePopmember<T> extends Popmember<T> {
         super(genes, ff);
     }
 
-    @Override
-    public Popmember<T> createInstance(Object[] newGenes) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createInstance'");
-    }
-
+    /* TODO: Implement function */
     @Override
     public Population<T> createInitialPopulation(long size) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'createInitialPopulation'");
     }
 

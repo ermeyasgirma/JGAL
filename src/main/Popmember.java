@@ -1,19 +1,46 @@
 package main;
 import java.util.*;
 
+/**
+ * The {@code Popmember} class represents an individual in a population, which contains a set of genes
+ * and a fitness score that evaluates how well the individual's genes perform based on a provided fitness function.
+ * It is an abstract class and is designed to be extended by specific implementations of individuals.
+ * 
+ * @param <T> The type of the genes contained within the individual.
+ */
 public abstract class Popmember<T> implements Comparable<Popmember<T>> {
 
     private T[] genes;
+
     private Double fitness;
+
+    /**
+     * The class type of the genes.
+     */
     private Class<T> className;
+
+    /**
+     * The fitness function used to calculate the fitness score of this individual.
+     */
     private FitnessFunc<T> ff;
 
-
+    /**
+     * Constructs a {@code Popmember} with a specified class type and fitness function.
+     *
+     * @param className The class type of the genes.
+     * @param ff The fitness function used to evaluate this individual's fitness.
+     */
     public Popmember(Class<T> className, FitnessFunc<T> ff) {
         this.className = className;
         this.ff = ff;
     }
 
+    /**
+     * Constructs a {@code Popmember} with a specified set of genes and fitness function.
+     *
+     * @param genes The array of genes that define this individual.
+     * @param ff The fitness function used to evaluate this individual's fitness.
+     */
     public Popmember(T[] genes, FitnessFunc<T> ff) {
         this.ff = ff;
         setGenes(genes);
@@ -25,8 +52,8 @@ public abstract class Popmember<T> implements Comparable<Popmember<T>> {
 
     public void setGenes(T[] genes) {
         this.genes = genes;
-        this.fitness = null;
-        getFitness();
+        this.fitness = null; // Invalidate fitness since genes have changed
+        getFitness(); // Recalculate fitness
     }
 
     public Double getFitness() {
@@ -36,14 +63,23 @@ public abstract class Popmember<T> implements Comparable<Popmember<T>> {
         return fitness;
     }
 
-    // Requires you to implement FitnessFunc
-    public  Double calculateFitness(FitnessFunc<T> fitnessFunc) {
+    /**
+     * Calculates the fitness of this individual based on the provided fitness function.
+     *
+     * @param fitnessFunc The fitness function used to calculate the fitness score.
+     * @return The calculated fitness score.
+     */
+    public Double calculateFitness(FitnessFunc<T> fitnessFunc) {
         return fitnessFunc.fitnessScore(genes);
     }
 
-    public abstract Popmember<T> createInstance(T[] newGenes);
-
     public abstract Population<T> createInitialPopulation(long size);
+
+
+    @Override
+    public int compareTo(Popmember<T> other) {
+        return Double.compare(this.getFitness(), other.getFitness());
+    }
 
     @Override
     public boolean equals(Object other) {
@@ -57,7 +93,7 @@ public abstract class Popmember<T> implements Comparable<Popmember<T>> {
 
         @SuppressWarnings("unchecked")
         final Popmember<T> otherPop = (Popmember<T>) other;
-        if (Arrays.equals(this.getGenes(), otherPop.getGenes()) && this.getFitness() == otherPop.getFitness()) {
+        if (Arrays.equals(this.getGenes(), otherPop.getGenes()) && this.getFitness().equals(otherPop.getFitness())) {
             return true;
         }
 
@@ -65,14 +101,7 @@ public abstract class Popmember<T> implements Comparable<Popmember<T>> {
     }
 
     @Override
-    public int compareTo(Popmember<T> other) {
-        return Double.compare(this.getFitness(), other.getFitness());
-    }
-
-    @Override
     public String toString() {
         return "Fittest solution:{" + "genes=" + Arrays.toString(genes) + ", fitness=" + fitness + '}';
     }
-
-
 }
