@@ -32,7 +32,7 @@ public class ExamplePopmember<T> extends Popmember<T> {
 
         while (set.size() < size) {
             Integer[] array = randomGenes();
-            int hash = Arrays.hashCode(array);
+            int hash = Arrays.deepHashCode(array);
             if (uniqueHashes.add(hash)) {
                 set.add(array);
             }
@@ -42,7 +42,7 @@ public class ExamplePopmember<T> extends Popmember<T> {
     }
 
     public Integer[] randomGenes() {
-        Integer[] array = new Integer[5];
+        Integer[] array = new Integer[10];
 
         for (int i = 0; i < array.length; i++) {
             array[i] = (int) (Math.random() * 2);

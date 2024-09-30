@@ -27,6 +27,8 @@ public class Rank<T> implements Selection<T> {
      */
     private PriorityQueue<Popmember<T>> rankQueue;
 
+    private Map<Popmember<T>, Integer> memberToRank;;
+
     /**
      * Default constructor for the {@code Rank} class.
      */
@@ -49,7 +51,10 @@ public class Rank<T> implements Selection<T> {
         // Select 90% of the population based on rank-roulette selection
         for (int i = 0; i < popSize * 0.9; i++) {
             Popmember<T> selected = runRankRoulette(population);
-            luckyPopmembers.add(selected);
+            if (selected != null) {
+                luckyPopmembers.add(selected);
+            }
+            
         }
 
         // Return the selected individuals as a new population
@@ -66,17 +71,9 @@ public class Rank<T> implements Selection<T> {
      * @return The {@code Popmember<T>} selected based on rank-based probabilities.
      */
     public Popmember<T> runRankRoulette(Population<T> population) {
-        Popmember<T> luckyMember = null;
-        int popSize = population.getIndividuals().size();
+        Popmember<T> luckyMember = population.getFittest();
+        int popSize = population.getIndividuals().size();        
 
-        // Create a map that assigns a rank to each individual based on fitness
-        Map<Popmember<T>, Integer> memberToRank = new HashMap<>();
-        int rankCounter = popSize;
-        while (rankCounter > 0) {
-            Popmember<T> pm = rankQueue.poll();
-            memberToRank.put(pm, rankCounter);
-            rankCounter -= 1;
-        }
 
         // Calculate the selection probability (rank fitness) for each individual
         double rankFitness;
@@ -115,6 +112,16 @@ public class Rank<T> implements Selection<T> {
         // Rank individuals by descending fitness
         rankQueue = new PriorityQueue<>(1, (c1, c2) -> Double.compare(c2.getFitness(), c1.getFitness()));
         rankQueue.addAll(population.getIndividuals());
+
+        int rankCounter = population.getIndividuals().size();
+        memberToRank = new HashMap<>();
+
+        while (rankCounter > 0) {
+            Popmember<T> pm = rankQueue.poll();
+            memberToRank.put(pm, rankCounter);
+            rankCounter -= 1;
+        }
+
     }
 
 }

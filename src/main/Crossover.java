@@ -51,7 +51,7 @@ public class Crossover {
         Population<T> offspringPop = null;
         List<Popmember<T>> childrenList = new ArrayList<>();
 
-        for (int i = 0; i < population.getIndividuals().size(); i+=2) {
+        for (int i = 0; i < population.getIndividuals().size() - 1; i+=2) {
             Popmember<T> parent1 = population.getIndividuals().get(i);
             Popmember<T> parent2 = population.getIndividuals().get(i+1);
 

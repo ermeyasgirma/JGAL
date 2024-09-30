@@ -26,6 +26,26 @@ public class ExampleFitnessFunc<T> implements FitnessFunc<T> {
         knapMap.put(
             4, new Integer[] {2, 3}
         );
+
+        knapMap.put(
+            5, new Integer[] {20, 1}
+        );
+
+        knapMap.put(
+            6, new Integer[] {10, 1}
+        );
+
+        knapMap.put(
+            7, new Integer[] {15, 1}
+        );
+
+        knapMap.put(
+            8, new Integer[] {30, 1}
+        );
+
+        knapMap.put(
+            9, new Integer[] {12, 2}
+        );
     }
 
     /* TODO:  Implement function */
@@ -39,8 +59,8 @@ public class ExampleFitnessFunc<T> implements FitnessFunc<T> {
                 value += knapMap.get(i)[0];
             }
         }
-        if (weight > 7) {return 0;}
-        return value;
+        if (weight > 12) {return 0;}
+        return value*value;
     }
 
 }

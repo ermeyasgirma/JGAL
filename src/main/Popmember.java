@@ -98,6 +98,6 @@ public abstract class Popmember<T> implements Comparable<Popmember<T>> {
 
     @Override
     public String toString() {
-        return "Fittest solution:{" + "genes=" + Arrays.toString(genes) + ", fitness=" + fitness + '}';
+        return "Popmember{" + "genes=" + Arrays.toString(genes) + ", fitness=" + fitness + '}';
     }
 }
