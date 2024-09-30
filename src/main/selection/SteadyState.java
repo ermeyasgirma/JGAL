@@ -8,8 +8,6 @@ import java.util.PriorityQueue;
 
 import main.Popmember;
 import main.Crossover;
-import main.ExampleMutation;
-import main.Mutation;
 
 public class SteadyState<T> implements Selection<T> {
 

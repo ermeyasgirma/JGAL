@@ -10,19 +10,14 @@ import java.util.*;
  */
 public abstract class Popmember<T> implements Comparable<Popmember<T>> {
 
-    private T[] genes;
+    protected T[] genes;
 
-    private Double fitness;
-
-    /**
-     * The class type of the genes.
-     */
-    private Class<T> className;
+    protected Double fitness;
 
     /**
      * The fitness function used to calculate the fitness score of this individual.
      */
-    private FitnessFunc<T> ff;
+    protected FitnessFunc<T> ff;
 
     /**
      * Constructs a {@code Popmember} with a specified class type and fitness function.
@@ -30,8 +25,7 @@ public abstract class Popmember<T> implements Comparable<Popmember<T>> {
      * @param className The class type of the genes.
      * @param ff The fitness function used to evaluate this individual's fitness.
      */
-    public Popmember(Class<T> className, FitnessFunc<T> ff) {
-        this.className = className;
+    public Popmember(FitnessFunc<T> ff) {
         this.ff = ff;
     }
 
@@ -74,6 +68,8 @@ public abstract class Popmember<T> implements Comparable<Popmember<T>> {
     }
 
     public abstract Population<T> createInitialPopulation(long size);
+
+    public abstract T[] mutate(T[] unMutated);
 
 
     @Override

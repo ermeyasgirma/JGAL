@@ -18,14 +18,8 @@ public class JGAL {
         Selection selectionType = getSelection(args);
         Selection elitism = new Elitism<>();
 
-        /* TODO:  Replace Object with the type parameter you want for your Population member
-         * 
-         *  Example:
-         *  Class c = Integer.class;
-        */
-        Class c = Object.class;
         FitnessFunc ff = new ExampleFitnessFunc();
-        ExamplePopmember<Integer> epm = new ExamplePopmember(c, ff);
+        ExamplePopmember<Integer> epm = new ExamplePopmember(ff);
 
         Population firstGeneration =  epm.createInitialPopulation(250);
         Population currentGeneration = firstGeneration;
@@ -33,8 +27,7 @@ public class JGAL {
             Population eliteCohort = elitism.select(currentGeneration);
             Population selectedMembers = selectionType.select(currentGeneration);
 
-            Mutation mutation = new ExampleMutation();
-            Population offspringPopulation = Crossover.crossPopulation(selectedMembers, mutation);
+            Population offspringPopulation = Crossover.crossPopulation(selectedMembers);
             Population newGen = combinePopulations(eliteCohort, offspringPopulation);
 
             currentGeneration = newGen;
