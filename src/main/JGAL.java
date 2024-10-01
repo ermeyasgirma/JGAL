@@ -8,33 +8,33 @@ import main.selection.Rank;
 import main.selection.RouletteWheel;
 import main.selection.Selection;
 
+/* TODO:
+ * 
+ * - Update readme to include changes 
+ */
+
 public class JGAL {
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public static void main(String[] args) {
 
-        long generations = 1000;
+        long generations = 4;
 
         Selection selectionType = getSelection(args);
         Selection elitism = new Elitism<>();
 
-        /* TODO:  Replace Object with the type parameter you want for your Population member
-         * 
-         *  Example:
-         *  Class c = Integer.class;
-        */
-        Class c = Object.class;
         FitnessFunc ff = new ExampleFitnessFunc();
-        ExamplePopmember<Integer> epm = new ExamplePopmember(c, ff);
+        ExamplePopmember<Integer> epm = new ExamplePopmember(ff);
 
-        Population firstGeneration =  epm.createInitialPopulation(250);
+        // Population size must be multiple of 10 && greater than 10
+        Population firstGeneration =  epm.createInitialPopulation(100);
         Population currentGeneration = firstGeneration;
+
         for (int i = 0; i < generations; i++) {
             Population eliteCohort = elitism.select(currentGeneration);
             Population selectedMembers = selectionType.select(currentGeneration);
 
-            Mutation mutation = new ExampleMutation();
-            Population offspringPopulation = Crossover.crossPopulation(selectedMembers, mutation);
+            Population offspringPopulation = Crossover.crossPopulation(selectedMembers);
             Population newGen = combinePopulations(eliteCohort, offspringPopulation);
 
             currentGeneration = newGen;
@@ -42,7 +42,7 @@ public class JGAL {
 
         Popmember solution = currentGeneration.getFittest();
 
-        System.out.println(solution);
+        System.out.println("Fittest solution is: " + solution);
 
     }
 
@@ -69,7 +69,7 @@ public class JGAL {
                 
                 return new Rank<>();
 
-            case "roulette wheel":
+            case "roulette":
 
                 return new RouletteWheel<>();
 

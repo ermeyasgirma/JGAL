@@ -21,6 +21,8 @@ public class Population<T> {
      */
     private Double totalFitness;
 
+    private Popmember<T> fittest;
+
     /**
      * Constructs a {@code Population} with a specified list of members.
      *
@@ -70,8 +72,11 @@ public class Population<T> {
      * @return The fittest {@code Popmember<T>} in the population, or {@code null} if the population is empty.
      */
     public Popmember<T> getFittest() {
-        return members.stream()
+        if (fittest == null) {
+            fittest = members.stream()
             .max((c1, c2) -> Double.compare(c1.getFitness(), c2.getFitness()))
             .orElse(null); // Return null if there are no individuals in the population
+        }
+        return fittest;
     }
 }
