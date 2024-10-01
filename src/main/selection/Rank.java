@@ -71,7 +71,7 @@ public class Rank<T> implements Selection<T> {
      * @return The {@code Popmember<T>} selected based on rank-based probabilities.
      */
     public Popmember<T> runRankRoulette(Population<T> population) {
-        Popmember<T> luckyMember = population.getFittest();
+        Popmember<T> luckyMember = null;
         int popSize = population.getIndividuals().size();        
 
 

@@ -8,12 +8,17 @@ import main.selection.Rank;
 import main.selection.RouletteWheel;
 import main.selection.Selection;
 
+/* TODO:
+ * 
+ * - Update readme to include changes 
+ */
+
 public class JGAL {
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public static void main(String[] args) {
 
-        long generations = 4;
+        long generations = 10;
 
         Selection selectionType = getSelection(args);
         Selection elitism = new Elitism<>();
