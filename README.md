@@ -4,7 +4,7 @@ The Genetic Algorithm Library is a Java-based framework designed to simplify the
 
 ### What are Genetic Algorithms?
 
-A genetic algorithm (GA) is a search and optimization technique inspired by the process of natural selection. It works by creating a population of possible solutions (called chromosomes), which evolve over time to find better solutions to a given problem. The process involves selecting the best-performing individuals based on a fitness function, combining them through crossover (like gene recombination), and introducing random mutations to introduce variability. Over multiple generations, the population improves, converging toward an optimal or near-optimal solution. GAs are particularly useful for solving complex problems where traditional methods are inefficient. One example is the travelling salesman problem.
+A genetic algorithm (GA) is a search and optimization technique inspired by the process of natural selection. It works by creating a population of possible solutions (called chromosomes), which evolve over time to find better solutions to a given problem. The process involves selecting the best-performing individuals based on a fitness function, combining them through crossover (like gene recombination), and introducing random mutations to introduce variability. Over multiple generations, the population improves, converging toward an optimal or near-optimal solution. GAs are particularly useful for solving complex problems where traditional methods are inefficient. 
 
 Here's a link to a video that explains a bit more: https://www.youtube.com/watch?v=MacVqujSXWE&t=311s
 
@@ -12,15 +12,16 @@ Here's a link to a video that explains a bit more: https://www.youtube.com/watch
 
 ## Build
 
-    $ cd main
+    $ cd src
 
-    $ javac *.java selection/*.java
+    $ javac main/*.java main/selection/*.java
 
-    $ java JGAL <selection_method>
+    $ java main/JGAL <selection_method>
 
 
 The genetic algorithm library uses elitism in each generation in combiniation with another selection method, which you are expected to pass in as a parameter.
-The options are the selection methods listed below.
+The options are the selection methods listed below. Tournament selection is not implemented, so for now use selection methods: rank, roulette, and boltzmann.
+If you choose not to pass a selection method as a parameter you will
 
 ## Custom Implementation
 
@@ -28,45 +29,10 @@ You will notice that the following classes were left unimplemented
 
     - ExamplePopmember.java
     - ExampleFitnessFunc.java
-    - ExampleMutation.java
 
-They each contain TODO comments indicate where implementation is necessary
+ You'll find implementations of  both of these which I used to solve the Knapsack problem. You can implement the 2 classes to solve an appropriate problem of your choice. One example is the traveling salesman problem.
 
-    public class ExamplePopmember<T> extends Popmember<T> {
-
-        public ExamplePopmember(Class<T> className, FitnessFunc<T> ff) {
-            super(className, ff);
-        }
-
-        public ExamplePopmember(T[] genes, FitnessFunc<T> ff) {
-            super(genes, ff);
-        }
-
-        /* TODO: Implement function */
-        @Override
-        public Population<T> createInitialPopulation(long size) {
-            List<Popmember> list = new ArrayList<>();
-            for (int i = 0; i < size; i++) {
-                Popmember<Integer> pm = new ExamplePopmember(randomArray(), super.ff);
-                list.add(pm);
-            }
-
-            return new Population(list);
-        }
-
-        public Integer[] randomArray() {
-            return null;
-        }
-
-    }
-
-The above is a mock implementation of ExamplePopmember. You would need to write randomArray() to return random integer arrays here. But you could choose to return String arrays, character arrays or another custom type.
-
-
-For ExampleFitnessFunc, choosing a good fitness function will determine how successful you're genetic algorithm is on finding a near optimal solution.
-
-For ExampleMutation, you simple need to add some random variation to you Popmember. Below you can find various mutation types, or alternatively create your own.
-
+Choosing a good fitness function will determine how successful your genetic algorithm is on finding a near optimal solution, so it is important to consider your implementation carefully.
 
 ## Selection Methods
 
