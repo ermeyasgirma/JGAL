@@ -18,7 +18,7 @@ public class JGAL {
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public static void main(String[] args) {
 
-        long generations = 10;
+        long generations = 4;
 
         Selection selectionType = getSelection(args);
         Selection elitism = new Elitism<>();
