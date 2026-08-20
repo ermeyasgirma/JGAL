@@ -1,0 +1,44 @@
+package main;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import main.demo.KnapsackProblem;
+import org.junit.jupiter.api.Test;
+
+class JGALTest {
+    @Test
+    void parsesAllSupportedOptions() {
+        JGAL.RunConfiguration configuration = JGAL.parseArguments(new String[] {
+                "--problem", "main.demo.KnapsackProblem", "--population-size", "20", "--generations", "5",
+                "--selection", "tournament", "--seed", "9", "--mutation-rate", "0.25" });
+
+        assertEquals("main.demo.KnapsackProblem", configuration.getProblemClass());
+        assertEquals(20, configuration.getPopulationSize());
+        assertEquals(5, configuration.getGenerations());
+        assertEquals("tournament", configuration.getSelection());
+        assertEquals(Long.valueOf(9L), configuration.getSeed());
+        assertEquals(0.25, configuration.getMutationRate(), 0.0);
+    }
+
+    @Test
+    void rejectsAnOutOfRangeMutationRate() {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+                () -> JGAL.parseArguments(new String[] { "--problem", "main.demo.KnapsackProblem", "--mutation-rate", "2" }));
+
+        assertEquals("Mutation rate must be between 0.0 and 1.0", exception.getMessage());
+    }
+
+    @Test
+    void repeatsASeededRunExactly() {
+        JGAL.RunConfiguration configuration = new JGAL.RunConfiguration("main.demo.KnapsackProblem", 24, 8,
+                "rank", Long.valueOf(42L), 0.05);
+
+        Popmember<Integer> first = JGAL.run(new KnapsackProblem(), configuration);
+        Popmember<Integer> second = JGAL.run(new KnapsackProblem(), configuration);
+
+        assertArrayEquals(first.getGenes(), second.getGenes());
+        assertEquals(first.getFitness(), second.getFitness());
+    }
+}
