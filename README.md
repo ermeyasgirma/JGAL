@@ -1,82 +1,97 @@
-# Genetic Algorithm Library
+# JGAL
 
-The Genetic Algorithm Library is a Java-based framework designed to simplify the use of genetic algorithms (GA) for solving optimization and search problems.
+JGAL is a Java 8+ library and command-line runner for genetic algorithms. It provides a reusable generation loop with elitism, one-point crossover, per-gene mutation, and four parent-selection strategies. Applications supply their own `GAProblem` implementation.
 
-### What are Genetic Algorithms?
+## Prerequisites
 
-A genetic algorithm (GA) is a search and optimization technique inspired by the process of natural selection. It works by creating a population of possible solutions (called chromosomes), which evolve over time to find better solutions to a given problem. The process involves selecting the best-performing individuals based on a fitness function, combining them through crossover (like gene recombination), and introducing random mutations to introduce variability. Over multiple generations, the population improves, converging toward an optimal or near-optimal solution. GAs are particularly useful for solving complex problems where traditional methods are inefficient. 
+- Java Development Kit 8 or later
+- Maven 3.6 or later
 
-Here's a link to a video that explains a bit more: https://www.youtube.com/watch?v=MacVqujSXWE&t=311s
+JGAL has no runtime dependencies. Maven downloads JUnit 5 only to run the test suite.
 
-# Usage
+## Build and Test
 
-## Build
+Run the test suite:
 
-    $ cd src
+```sh
+mvn test
+```
 
-    $ javac main/*.java main/selection/*.java
+Create the executable JAR:
 
-    $ java main/JGAL <selection_method>
+```sh
+mvn package
+```
 
+The packaged application is `target/jgal-1.0.0.jar`.
 
-The genetic algorithm library uses elitism in each generation in combiniation with another selection method, which you are expected to pass in as a parameter.
-The options are the selection methods listed below. Tournament selection is not implemented, so for now use selection methods: rank, roulette, and boltzmann.
-If you choose not to pass a selection method as a parameter you will
+## Run the Knapsack Demo
 
-## Custom Implementation
+The bundled demo solves a 0/1 knapsack problem with ten items and a capacity of 12:
 
-You will notice that the following classes were left unimplemented
+```sh
+java -jar target/jgal-1.0.0.jar \
+  --problem main.demo.KnapsackProblem \
+  --population-size 100 \
+  --generations 100 \
+  --selection rank \
+  --seed 42 \
+  --mutation-rate 0.01
+```
 
-    - ExamplePopmember.java
-    - ExampleFitnessFunc.java
+Providing `--seed` makes the run reproducible. Omit it to use a new random seed each run.
 
- You'll find implementations of  both of these which I used to solve the Knapsack problem. You can implement the 2 classes to solve an appropriate problem of your choice. One example is the traveling salesman problem.
+## CLI Options
 
-Choosing a good fitness function will determine how successful your genetic algorithm is on finding a near optimal solution, so it is important to consider your implementation carefully.
+| Option | Required | Default | Description |
+| --- | --- | --- | --- |
+| `--problem <class>` | Yes | None | Fully qualified class implementing `GAProblem` with a public zero-argument constructor. |
+| `--population-size <positive integer>` | No | `100` | Number of members in every generation. |
+| `--generations <non-negative integer>` | No | `100` | Number of generations to run. |
+| `--selection <method>` | No | `rank` | `rank`, `roulette`, `boltzmann`, or `tournament`. |
+| `--seed <long>` | No | Random | Seed for reproducible runs. |
+| `--mutation-rate <0.0-1.0>` | No | `0.01` | Independent probability that each child gene is mutated. |
+| `--help` | No | None | Print command usage. |
+
+Invalid, duplicate, unknown, or incomplete options produce an error and usage text.
+
+## Create a Custom Problem
+
+Implement `GAProblem<T>` and return a `Popmember<T>` prototype. The concrete member evaluates fitness, creates random initial members, creates a new child of the same type, and mutates the child gene array.
+
+```java
+package example;
+
+import main.GAProblem;
+import main.Popmember;
+
+public final class MyProblem implements GAProblem<Integer> {
+    @Override
+    public Popmember<Integer> createPrototype() {
+        return new MyPopmember();
+    }
+}
+```
+
+`MyPopmember` must implement these methods:
+
+```java
+Population<Integer> createInitialPopulation(int size, Random random);
+Popmember<Integer> createChild(Integer[] genes);
+Integer[] mutate(Integer[] genes, double mutationRate, Random random);
+```
+
+Use the supplied `Random` rather than creating a new one so `--seed` remains deterministic. `Crossover` creates a separate child and never changes either selected parent. A generation retains the highest-fitness 10% as elites and fills the remaining slots with children.
 
 ## Selection Methods
 
-### Roulette Wheel Selection:
-- Also known as fitness-proportionate selection.
-- Individuals are selected based on their fitness values, with higher fitness individuals having a greater chance of being chosen.
-- It’s like a weighted lottery where better solutions get more “tickets.”
+- **Rank** weights members by fitness rank rather than fitness magnitude.
+- **Roulette** weights members by nonnegative fitness; it falls back to uniform sampling when every weight is zero.
+- **Boltzmann** uses normalized exponential fitness weights and cools its temperature across generations.
+- **Tournament** samples two members and selects the fitter one.
 
-### Rank-based Selection
-- Individuals are ranked based on their fitness rather than selecting directly from fitness values.
-- The probability of selection is based on an individual’s rank, not fitness magnitude, which reduces the impact of highly dominant individuals.
+All parent selection is with replacement, so a strong member may be chosen more than once.
 
-### Boltzmann Selection
-- Selection probabilities are adjusted based on the “temperature” of the system, inspired by simulated annealing.
-- Initially, individuals with lower fitness still have a decent chance of being selected to maintain diversity (higher temperature).
-- As the algorithm progresses, the temperature decreases, making fitness values more critical and narrowing the selection to the best individuals.
-- Useful for balancing exploration and exploitation during different stages of the genetic algorithm.
+## License
 
-### Elitism
-- A small percentage of the best-performing individuals are automatically passed to the next generation without any changes.
-- Ensures that the top solutions are always retained, preventing regression in performance.
-
-### Tournament Selection
-- A few individuals are randomly selected from the population, and the one with the highest fitness is chosen.
-- The process is repeated until the desired number of individuals is selected.
-- Can control the selection pressure by adjusting the size of the tournament group.
-
-
-## Mutation
-
-### Bit Flip Mutation
-
-In this bit flip mutation, we select one or more random bits and flip them. This is used for binary encoded GAs. If not binary encoded you can change the sign of the value eg. 5 -> 5, or if that is not appicable invert, eg. 5 -> 1/5 
-
-### Swap Mutation
-In swap mutation, we select two positions on the chromosome at random, and interchange the values. This is common in permutation based encodings.
-
-### Scramble Mutation
-Scramble mutation is also popular with permutation representations. In this, from the entire chromosome, a subset of genes is chosen and their values are scrambled or shuffled randomly.
-
-## Requirements
-
-Java version: Java 8 or higher
-
-Dependencies: No external dependencies required
-
-
+JGAL is available under the [MIT License](LICENSE).

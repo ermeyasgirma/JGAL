@@ -31,6 +31,15 @@ class JGALTest {
     }
 
     @Test
+    void rejectsPopulationSizesOutsideTheIntegerRange() {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+                () -> JGAL.parseArguments(new String[] { "--problem", "main.demo.KnapsackProblem",
+                        "--population-size", "2147483648" }));
+
+        assertEquals("Population size must be an integer", exception.getMessage());
+    }
+
+    @Test
     void repeatsASeededRunExactly() {
         JGAL.RunConfiguration configuration = new JGAL.RunConfiguration("main.demo.KnapsackProblem", 24, 8,
                 "rank", Long.valueOf(42L), 0.05);

@@ -33,10 +33,19 @@ public abstract class Popmember<T> implements Comparable<Popmember<T>> {
         return fitness;
     }
 
+    /**
+     * Creates an initial population using the runner's random source.
+     */
     public abstract Population<T> createInitialPopulation(int size, Random random);
 
+    /**
+     * Creates a new member of the same concrete problem type from the supplied genes.
+     */
     public abstract Popmember<T> createChild(T[] genes);
 
+    /**
+     * Mutates a child gene array according to the requested per-gene rate.
+     */
     public abstract T[] mutate(T[] genes, double mutationRate, Random random);
 
     @Override

@@ -22,6 +22,9 @@ public final class JGAL {
     private JGAL() {
     }
 
+    /**
+     * Runs a configured genetic algorithm from the command line.
+     */
     public static void main(String[] args) {
         System.exit(runMain(args));
     }
@@ -165,7 +168,11 @@ public final class JGAL {
     }
 
     private static int positiveInt(Map<String, String> options, String option, int defaultValue) {
-        int value = options.containsKey(option) ? (int) parseLong(options.get(option), "Population size") : defaultValue;
+        long parsed = options.containsKey(option) ? parseLong(options.get(option), "Population size") : defaultValue;
+        if (parsed > Integer.MAX_VALUE) {
+            throw new IllegalArgumentException("Population size must be an integer");
+        }
+        int value = (int) parsed;
         if (value <= 0) {
             throw new IllegalArgumentException("Population size must be positive");
         }
@@ -173,7 +180,11 @@ public final class JGAL {
     }
 
     private static int nonNegativeInt(Map<String, String> options, String option, int defaultValue) {
-        int value = options.containsKey(option) ? (int) parseLong(options.get(option), "Generations") : defaultValue;
+        long parsed = options.containsKey(option) ? parseLong(options.get(option), "Generations") : defaultValue;
+        if (parsed > Integer.MAX_VALUE) {
+            throw new IllegalArgumentException("Generations must be an integer");
+        }
+        int value = (int) parsed;
         if (value < 0) {
             throw new IllegalArgumentException("Generations must not be negative");
         }
