@@ -47,17 +47,26 @@ public final class JGAL {
     }
 
     public static RunConfiguration parseArguments(String[] args) {
-        Map<String, String> options = new HashMap<String, String>();
-        for (int index = 0; index < args.length; index++) {
-            String option = args[index];
-            if ("--help".equals(option)) {
-                if (args.length != 1) {
-                    throw new IllegalArgumentException("--help cannot be combined with other options");
-                }
-                return RunConfiguration.help();
+        if (args.length == 0) {
+            return RunConfiguration.help();
+        }
+        if ("--help".equals(args[0])) {
+            if (args.length != 1) {
+                throw new IllegalArgumentException("--help cannot be combined with other options");
             }
+            return RunConfiguration.help();
+        }
+        if (args[0].startsWith("--")) {
+            throw new IllegalArgumentException("Unknown option: " + args[0]);
+        }
+
+        String problemClass = args[0];
+        Map<String, String> options = new HashMap<String, String>();
+        for (int index = 1; index < args.length; index++) {
+            String option = args[index];
             if (!isSupportedOption(option)) {
-                throw new IllegalArgumentException("Unknown option: " + option);
+                throw new IllegalArgumentException(option.startsWith("--")
+                        ? "Unknown option: " + option : "Unexpected argument: " + option);
             }
             if (index + 1 == args.length || args[index + 1].startsWith("--")) {
                 throw new IllegalArgumentException("Missing value for " + option);
@@ -66,7 +75,6 @@ public final class JGAL {
                 throw new IllegalArgumentException("Duplicate option: " + option);
             }
         }
-        String problemClass = requiredOption(options, "--problem");
         int populationSize = positiveInt(options, "--population-size", DEFAULT_POPULATION_SIZE);
         int generations = nonNegativeInt(options, "--generations", DEFAULT_GENERATIONS);
         String selection = options.containsKey("--selection") ? options.get("--selection").toLowerCase() : "rank";
@@ -84,7 +92,7 @@ public final class JGAL {
     }
 
     public static String usage() {
-        return "Usage: java -jar jgal-1.0.0.jar --problem <class> [--population-size <positive integer>] "
+        return "Usage: java -jar jgal.jar <problem-class> [--population-size <positive integer>] "
                 + "[--generations <non-negative integer>] [--selection <rank|roulette|boltzmann|tournament>] "
                 + "[--seed <long>] [--mutation-rate <0.0-1.0>]";
     }
@@ -156,15 +164,8 @@ public final class JGAL {
     }
 
     private static boolean isSupportedOption(String option) {
-        return "--problem".equals(option) || "--population-size".equals(option) || "--generations".equals(option)
-                || "--selection".equals(option) || "--seed".equals(option) || "--mutation-rate".equals(option);
-    }
-
-    private static String requiredOption(Map<String, String> options, String option) {
-        if (!options.containsKey(option)) {
-            throw new IllegalArgumentException("Missing required option: " + option);
-        }
-        return options.get(option);
+        return "--population-size".equals(option) || "--generations".equals(option) || "--selection".equals(option)
+                || "--seed".equals(option) || "--mutation-rate".equals(option);
     }
 
     private static int positiveInt(Map<String, String> options, String option, int defaultValue) {

@@ -4,6 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
+
 import main.demo.KnapsackProblem;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +15,7 @@ class JGALTest {
     @Test
     void parsesAllSupportedOptions() {
         JGAL.RunConfiguration configuration = JGAL.parseArguments(new String[] {
-                "--problem", "main.demo.KnapsackProblem", "--population-size", "20", "--generations", "5",
+                "main.demo.KnapsackProblem", "--population-size", "20", "--generations", "5",
                 "--selection", "tournament", "--seed", "9", "--mutation-rate", "0.25" });
 
         assertEquals("main.demo.KnapsackProblem", configuration.getProblemClass());
@@ -23,9 +27,59 @@ class JGALTest {
     }
 
     @Test
+    void parsesAPositionalProblemWithDefaults() {
+        JGAL.RunConfiguration configuration = JGAL.parseArguments(
+                new String[] { "main.demo.KnapsackProblem" });
+
+        assertEquals("main.demo.KnapsackProblem", configuration.getProblemClass());
+        assertEquals(100, configuration.getPopulationSize());
+        assertEquals(100, configuration.getGenerations());
+        assertEquals("rank", configuration.getSelection());
+        assertEquals(null, configuration.getSeed());
+        assertEquals(0.01, configuration.getMutationRate(), 0.0);
+    }
+
+    @Test
+    void parsesOptionsAfterThePositionalProblem() {
+        JGAL.RunConfiguration configuration = JGAL.parseArguments(new String[] {
+                "main.demo.KnapsackProblem", "--population-size", "20", "--generations", "5",
+                "--selection", "tournament", "--seed", "9", "--mutation-rate", "0.25" });
+
+        assertEquals("main.demo.KnapsackProblem", configuration.getProblemClass());
+        assertEquals(20, configuration.getPopulationSize());
+        assertEquals(5, configuration.getGenerations());
+        assertEquals("tournament", configuration.getSelection());
+        assertEquals(Long.valueOf(9L), configuration.getSeed());
+        assertEquals(0.25, configuration.getMutationRate(), 0.0);
+    }
+
+    @Test
+    void noArgumentsPrintsUsageAndSucceeds() {
+        PrintStream originalOut = System.out;
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        try {
+            System.setOut(new PrintStream(output));
+            assertEquals(0, JGAL.runMain(new String[0]));
+        } finally {
+            System.setOut(originalOut);
+        }
+
+        assertEquals(JGAL.usage() + System.lineSeparator(),
+                new String(output.toByteArray(), StandardCharsets.UTF_8));
+    }
+
+    @Test
+    void rejectsTheRemovedProblemOptionAndExtraPositionalArguments() {
+        assertThrows(IllegalArgumentException.class,
+                () -> JGAL.parseArguments(new String[] { "--problem", "main.demo.KnapsackProblem" }));
+        assertThrows(IllegalArgumentException.class,
+                () -> JGAL.parseArguments(new String[] { "main.demo.KnapsackProblem", "other.Problem" }));
+    }
+
+    @Test
     void rejectsAnOutOfRangeMutationRate() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-                () -> JGAL.parseArguments(new String[] { "--problem", "main.demo.KnapsackProblem", "--mutation-rate", "2" }));
+                () -> JGAL.parseArguments(new String[] { "main.demo.KnapsackProblem", "--mutation-rate", "2" }));
 
         assertEquals("Mutation rate must be between 0.0 and 1.0", exception.getMessage());
     }
@@ -33,7 +87,7 @@ class JGALTest {
     @Test
     void rejectsPopulationSizesOutsideTheIntegerRange() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-                () -> JGAL.parseArguments(new String[] { "--problem", "main.demo.KnapsackProblem",
+                () -> JGAL.parseArguments(new String[] { "main.demo.KnapsackProblem",
                         "--population-size", "2147483648" }));
 
         assertEquals("Population size must be an integer", exception.getMessage());
