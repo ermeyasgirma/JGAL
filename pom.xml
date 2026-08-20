@@ -25,6 +25,7 @@
     </dependencies>
 
     <build>
+        <finalName>jgal</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>

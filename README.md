@@ -27,15 +27,20 @@ Create the executable JAR:
 mvn package
 ```
 
-The packaged application is `target/jgal-1.0.0.jar`.
+The packaged application is `target/jgal.jar`.
 
 ## Run the Knapsack Demo
 
 The bundled demo solves a 0/1 knapsack problem with ten items and a capacity of 12:
 
 ```sh
-java -jar target/jgal-1.0.0.jar \
-  --problem main.demo.KnapsackProblem \
+java -jar target/jgal.jar main.demo.KnapsackProblem
+```
+
+Customized execution:
+
+```sh
+java -jar target/jgal.jar main.demo.KnapsackProblem \
   --population-size 100 \
   --generations 100 \
   --selection rank \
@@ -49,7 +54,7 @@ Providing `--seed` makes the run reproducible. Omit it to use a new random seed 
 
 | Option | Required | Default | Description |
 | --- | --- | --- | --- |
-| `--problem <class>` | Yes | None | Fully qualified class implementing `GAProblem` with a public zero-argument constructor. |
+| `<problem-class>` | Yes | None | Fully qualified class implementing `GAProblem` with a public zero-argument constructor. |
 | `--population-size <positive integer>` | No | `100` | Number of members in every generation. |
 | `--generations <non-negative integer>` | No | `100` | Number of generations to run. |
 | `--selection <method>` | No | `rank` | `rank`, `roulette`, `boltzmann`, or `tournament`. |
