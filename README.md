@@ -2,6 +2,10 @@
 
 JGAL is a Java 8+ library and command-line runner for genetic algorithms. It provides a reusable generation loop with elitism, one-point crossover, per-gene mutation, and four parent-selection strategies. Applications supply their own `GAProblem` implementation.
 
+## What Is a Genetic Algorithm?
+
+A genetic algorithm is a stochastic optimization technique that evolves a population of candidate solutions over successive generations. Candidates are evaluated by a fitness function; selection favors stronger candidates, crossover combines parent genes, and mutation introduces variation to explore the search space.
+
 ## Prerequisites
 
 - Java Development Kit 8 or later
