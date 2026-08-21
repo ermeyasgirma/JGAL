@@ -13,11 +13,22 @@ class CrossoverTest {
         Popmember<Integer> first = new BinaryPopmember(new Integer[] { 0, 0, 0, 0 });
         Popmember<Integer> second = new BinaryPopmember(new Integer[] { 1, 1, 1, 1 });
 
-        Popmember<Integer> child = Crossover.crossGenes(first, second, 0.0, new Random(3));
+        Popmember<Integer> child = Crossover.crossGenes(first, second, 1.0, 0.0, new Random(3));
 
         assertNotSame(first, child);
         assertArrayEquals(new Integer[] { 0, 0, 0, 0 }, first.getGenes());
         assertArrayEquals(new Integer[] { 1, 1, 1, 1 }, second.getGenes());
+    }
+
+    @Test
+    void zeroCrossoverRateCopiesTheFirstParentBeforeMutation() {
+        Popmember<Integer> first = new BinaryPopmember(new Integer[] { 0, 0, 0, 0 });
+        Popmember<Integer> second = new BinaryPopmember(new Integer[] { 1, 1, 1, 1 });
+
+        Popmember<Integer> child = Crossover.crossGenes(first, second, 0.0, 0.0, new Random(3));
+
+        assertArrayEquals(first.getGenes(), child.getGenes());
+        assertNotSame(first, child);
     }
 
     static final class BinaryPopmember extends Popmember<Integer> {
