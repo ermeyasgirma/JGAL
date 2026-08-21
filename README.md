@@ -27,20 +27,20 @@ Create the executable JAR:
 mvn package
 ```
 
-The packaged application is `target/jgal.jar`.
+Maven creates the canonical artifact at `target/jgal.jar` and a convenience copy at `jgal.jar` in the repository root.
 
 ## Run the Knapsack Demo
 
 The bundled demo solves a 0/1 knapsack problem with ten items and a capacity of 12:
 
 ```sh
-java -jar target/jgal.jar main.demo.KnapsackProblem
+java -jar jgal.jar main.demo.KnapsackProblem
 ```
 
 Customized execution:
 
 ```sh
-java -jar target/jgal.jar main.demo.KnapsackProblem \
+java -jar jgal.jar main.demo.KnapsackProblem \
   --population-size 100 \
   --generations 100 \
   --selection rank \
