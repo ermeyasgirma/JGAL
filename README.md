@@ -27,8 +27,6 @@ Create the executable JAR:
 mvn package
 ```
 
-Maven creates the canonical artifact at `target/jgal.jar` and a convenience copy at `jgal.jar` in the repository root.
-
 ## Run the Knapsack Demo
 
 The bundled demo solves a 0/1 knapsack problem with ten items and a capacity of 12:
