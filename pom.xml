@@ -37,7 +37,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>main.JGAL</mainClass>
+                            <mainClass>com.github.ermeyasgirma.jgal.JGAL</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

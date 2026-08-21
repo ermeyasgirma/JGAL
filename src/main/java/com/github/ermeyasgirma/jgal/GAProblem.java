@@ -1,4 +1,4 @@
-package main;
+package com.github.ermeyasgirma.jgal;
 
 public interface GAProblem<T> {
     /**

@@ -1,4 +1,4 @@
-package main;
+package com.github.ermeyasgirma.jgal;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -7,12 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import main.selection.Boltzmann;
-import main.selection.Elitism;
-import main.selection.Rank;
-import main.selection.RouletteWheel;
-import main.selection.Selection;
-import main.selection.TournamentSelection;
+import com.github.ermeyasgirma.jgal.selection.Boltzmann;
+import com.github.ermeyasgirma.jgal.selection.Elitism;
+import com.github.ermeyasgirma.jgal.selection.Rank;
+import com.github.ermeyasgirma.jgal.selection.RouletteWheel;
+import com.github.ermeyasgirma.jgal.selection.Selection;
+import com.github.ermeyasgirma.jgal.selection.TournamentSelection;
 
 public final class JGAL {
     private static final int DEFAULT_POPULATION_SIZE = 100;

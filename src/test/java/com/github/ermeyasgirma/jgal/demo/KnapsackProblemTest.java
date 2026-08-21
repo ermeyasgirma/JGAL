@@ -1,4 +1,4 @@
-package main.demo;
+package com.github.ermeyasgirma.jgal.demo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -6,8 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Arrays;
 import java.util.Random;
 
-import main.Popmember;
-import main.Population;
+import com.github.ermeyasgirma.jgal.Popmember;
+import com.github.ermeyasgirma.jgal.Population;
 import org.junit.jupiter.api.Test;
 
 class KnapsackProblemTest {

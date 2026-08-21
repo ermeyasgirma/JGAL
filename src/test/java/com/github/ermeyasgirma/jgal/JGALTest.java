@@ -1,4 +1,4 @@
-package main;
+package com.github.ermeyasgirma.jgal;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -8,17 +8,17 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 
-import main.demo.KnapsackProblem;
+import com.github.ermeyasgirma.jgal.demo.KnapsackProblem;
 import org.junit.jupiter.api.Test;
 
 class JGALTest {
     @Test
     void parsesAllSupportedOptions() {
         JGAL.RunConfiguration configuration = JGAL.parseArguments(new String[] {
-                "main.demo.KnapsackProblem", "--population-size", "20", "--generations", "5",
+                "com.github.ermeyasgirma.jgal.demo.KnapsackProblem", "--population-size", "20", "--generations", "5",
                 "--selection", "tournament", "--seed", "9", "--mutation-rate", "0.25" });
 
-        assertEquals("main.demo.KnapsackProblem", configuration.getProblemClass());
+        assertEquals("com.github.ermeyasgirma.jgal.demo.KnapsackProblem", configuration.getProblemClass());
         assertEquals(20, configuration.getPopulationSize());
         assertEquals(5, configuration.getGenerations());
         assertEquals("tournament", configuration.getSelection());
@@ -29,9 +29,9 @@ class JGALTest {
     @Test
     void parsesAPositionalProblemWithDefaults() {
         JGAL.RunConfiguration configuration = JGAL.parseArguments(
-                new String[] { "main.demo.KnapsackProblem" });
+                new String[] { "com.github.ermeyasgirma.jgal.demo.KnapsackProblem" });
 
-        assertEquals("main.demo.KnapsackProblem", configuration.getProblemClass());
+        assertEquals("com.github.ermeyasgirma.jgal.demo.KnapsackProblem", configuration.getProblemClass());
         assertEquals(100, configuration.getPopulationSize());
         assertEquals(100, configuration.getGenerations());
         assertEquals("rank", configuration.getSelection());
@@ -42,10 +42,10 @@ class JGALTest {
     @Test
     void parsesOptionsAfterThePositionalProblem() {
         JGAL.RunConfiguration configuration = JGAL.parseArguments(new String[] {
-                "main.demo.KnapsackProblem", "--population-size", "20", "--generations", "5",
+                "com.github.ermeyasgirma.jgal.demo.KnapsackProblem", "--population-size", "20", "--generations", "5",
                 "--selection", "tournament", "--seed", "9", "--mutation-rate", "0.25" });
 
-        assertEquals("main.demo.KnapsackProblem", configuration.getProblemClass());
+        assertEquals("com.github.ermeyasgirma.jgal.demo.KnapsackProblem", configuration.getProblemClass());
         assertEquals(20, configuration.getPopulationSize());
         assertEquals(5, configuration.getGenerations());
         assertEquals("tournament", configuration.getSelection());
@@ -71,15 +71,15 @@ class JGALTest {
     @Test
     void rejectsTheRemovedProblemOptionAndExtraPositionalArguments() {
         assertThrows(IllegalArgumentException.class,
-                () -> JGAL.parseArguments(new String[] { "--problem", "main.demo.KnapsackProblem" }));
+                () -> JGAL.parseArguments(new String[] { "--problem", "com.github.ermeyasgirma.jgal.demo.KnapsackProblem" }));
         assertThrows(IllegalArgumentException.class,
-                () -> JGAL.parseArguments(new String[] { "main.demo.KnapsackProblem", "other.Problem" }));
+                () -> JGAL.parseArguments(new String[] { "com.github.ermeyasgirma.jgal.demo.KnapsackProblem", "other.Problem" }));
     }
 
     @Test
     void rejectsAnOutOfRangeMutationRate() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-                () -> JGAL.parseArguments(new String[] { "main.demo.KnapsackProblem", "--mutation-rate", "2" }));
+                () -> JGAL.parseArguments(new String[] { "com.github.ermeyasgirma.jgal.demo.KnapsackProblem", "--mutation-rate", "2" }));
 
         assertEquals("Mutation rate must be between 0.0 and 1.0", exception.getMessage());
     }
@@ -87,7 +87,7 @@ class JGALTest {
     @Test
     void rejectsPopulationSizesOutsideTheIntegerRange() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-                () -> JGAL.parseArguments(new String[] { "main.demo.KnapsackProblem",
+                () -> JGAL.parseArguments(new String[] { "com.github.ermeyasgirma.jgal.demo.KnapsackProblem",
                         "--population-size", "2147483648" }));
 
         assertEquals("Population size must be an integer", exception.getMessage());
@@ -95,7 +95,7 @@ class JGALTest {
 
     @Test
     void repeatsASeededRunExactly() {
-        JGAL.RunConfiguration configuration = new JGAL.RunConfiguration("main.demo.KnapsackProblem", 24, 8,
+        JGAL.RunConfiguration configuration = new JGAL.RunConfiguration("com.github.ermeyasgirma.jgal.demo.KnapsackProblem", 24, 8,
                 "rank", Long.valueOf(42L), 0.05);
 
         Popmember<Integer> first = JGAL.run(new KnapsackProblem(), configuration);

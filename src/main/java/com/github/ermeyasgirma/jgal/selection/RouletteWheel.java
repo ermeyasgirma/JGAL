@@ -1,10 +1,10 @@
-package main.selection;
+package com.github.ermeyasgirma.jgal.selection;
 
 import java.util.List;
 import java.util.Random;
 
-import main.Popmember;
-import main.Population;
+import com.github.ermeyasgirma.jgal.Popmember;
+import com.github.ermeyasgirma.jgal.Population;
 
 public final class RouletteWheel<T> implements Selection<T> {
     @Override

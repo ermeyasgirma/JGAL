@@ -1,12 +1,12 @@
-package main.demo;
+package com.github.ermeyasgirma.jgal.demo;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import main.FitnessFunc;
-import main.Popmember;
-import main.Population;
+import com.github.ermeyasgirma.jgal.FitnessFunc;
+import com.github.ermeyasgirma.jgal.Popmember;
+import com.github.ermeyasgirma.jgal.Population;
 
 final class KnapsackPopmember extends Popmember<Integer> {
     KnapsackPopmember(FitnessFunc<Integer> fitnessFunc) {

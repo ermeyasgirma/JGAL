@@ -1,6 +1,6 @@
-package main.demo;
+package com.github.ermeyasgirma.jgal.demo;
 
-import main.FitnessFunc;
+import com.github.ermeyasgirma.jgal.FitnessFunc;
 
 final class KnapsackFitnessFunc implements FitnessFunc<Integer> {
     private static final int CAPACITY = 12;

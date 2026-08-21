@@ -1,4 +1,4 @@
-package main;
+package com.github.ermeyasgirma.jgal;
 
 import java.util.ArrayList;
 import java.util.Collections;

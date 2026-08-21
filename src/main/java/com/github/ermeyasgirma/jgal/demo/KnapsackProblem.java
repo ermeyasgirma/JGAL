@@ -1,7 +1,7 @@
-package main.demo;
+package com.github.ermeyasgirma.jgal.demo;
 
-import main.GAProblem;
-import main.Popmember;
+import com.github.ermeyasgirma.jgal.GAProblem;
+import com.github.ermeyasgirma.jgal.Popmember;
 
 public final class KnapsackProblem implements GAProblem<Integer> {
     @Override
