@@ -29,8 +29,11 @@ public abstract class Popmember<T> implements Comparable<Popmember<T>> {
     public final double getFitness() {
         if (fitness == null) {
             fitness = ff.fitnessScore(genes);
+            if (!Double.isFinite(fitness.doubleValue())) {
+                throw new IllegalArgumentException("Fitness must be finite");
+            }
         }
-        return fitness;
+        return fitness.doubleValue();
     }
 
     /**

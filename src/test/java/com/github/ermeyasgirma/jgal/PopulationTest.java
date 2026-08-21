@@ -1,6 +1,7 @@
 package com.github.ermeyasgirma.jgal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,6 +30,17 @@ class PopulationTest {
                 member(new Integer[] { 0 }, 2.0), member(new Integer[] { 1 }, 3.0)));
 
         assertEquals(5.0, population.getTotalFitness(), 0.0);
+    }
+
+    @Test
+    void rejectsNonFiniteFitness() {
+        IllegalArgumentException nan = assertThrows(IllegalArgumentException.class,
+                () -> member(new Integer[] { 0 }, Double.NaN).getFitness());
+        IllegalArgumentException infinity = assertThrows(IllegalArgumentException.class,
+                () -> member(new Integer[] { 0 }, Double.POSITIVE_INFINITY).getFitness());
+
+        assertEquals("Fitness must be finite", nan.getMessage());
+        assertEquals("Fitness must be finite", infinity.getMessage());
     }
 
     private static Popmember<Integer> member(Integer[] genes, double fitness) {
